@@ -1,0 +1,14 @@
+{
+  "name": "flatman",
+  "version": "1.0.0",
+  "main": "main.js",
+  "repository": "git@github.com:Bojidarist/flatman.git",
+  "author": "Bojidar Qnkov <bojidar.qnkov@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^23.2.1"
+  }
+}
