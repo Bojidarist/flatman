@@ -1,5 +1,6 @@
 const { app, BrowserWindow } = require("electron");
 const path = require("path");
+const ipcMainHelpers = require("./helpers/ipcMainHelpers");
 
 const createWindow = () => {
   const win = new BrowserWindow({
@@ -10,6 +11,7 @@ const createWindow = () => {
     },
   });
 
+  ipcMainHelpers.initHandlers();
   win.loadFile("index.html");
 };
 
