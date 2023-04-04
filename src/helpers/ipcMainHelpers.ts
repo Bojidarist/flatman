@@ -1,10 +1,9 @@
 const { ipcMain } = require("electron");
 const flatpakService = require("../services/flatpakService");
 
-exports.initHandlers = () => {
+export const initHandlers = (): void => {
   ipcMain.handle("flatpak_version", async () => {
-    let version = await flatpakService.getFlatpakVersion();
-    return version.replace("\n", "");
+    return await flatpakService.getFlatpakVersion();
   });
 
   ipcMain.handle("flatpak_get_installed_apps", async () => {
