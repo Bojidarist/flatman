@@ -17,7 +17,7 @@ export const App = () => {
   return (
     <div>
       <h1>{versionMessage}</h1>
-      {installedApps.map((app, idx) => <div key={idx}>{app.name}</div>)}
+      {installedApps.map((app, idx) => <div key={idx} className="bg-gray-500 text-center text-white">{app.name}</div>)}
     </div>
   );
 };
