@@ -2,12 +2,12 @@ import { FlatpakApp } from "../models/flatpakApp";
 
 import * as commandHelpers from "../helpers/commandHelpers";
 
-exports.getFlatpakVersion = async (): Promise<string> => {
+export const getFlatpakVersion = async (): Promise<string> => {
   let version = await commandHelpers.executeCommand("flatpak --version");
   return version.replace("\n", "");
 };
 
-exports.getInstalledApps = async (): Promise<Array<FlatpakApp>> => {
+export const getInstalledApps = async (): Promise<FlatpakApp[]> => {
   let result = await commandHelpers.executeCommand("flatpak list --app");
   return result
     .split("\n")

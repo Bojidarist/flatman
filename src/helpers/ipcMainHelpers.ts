@@ -1,5 +1,5 @@
-const { ipcMain } = require("electron");
-const flatpakService = require("../services/flatpakService");
+import { ipcMain } from "electron";
+import * as flatpakService from "../services/flatpakService";
 
 export const initHandlers = (): void => {
   ipcMain.handle("flatpak_version", async () => {
