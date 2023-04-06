@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { FlatpakApp } from "../models/flatpakApp";
+import { Link } from "react-router-dom";
 
 export const App = () => {
   const [versionMessage, setVersionMessage] =
@@ -20,7 +21,9 @@ export const App = () => {
       <h1>{versionMessage}</h1>
       {installedApps.map((app, idx) => (
         <div key={idx} className="bg-gray-500 text-center text-white">
-          {app.name}
+          <Link to={"/app"} state={app}>
+            {app.name}
+          </Link>
         </div>
       ))}
     </div>
