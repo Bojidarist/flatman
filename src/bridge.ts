@@ -12,4 +12,6 @@ export const Versions = {
 export const Flatpak = {
   getInstalledApps: async (): Promise<FlatpakApp[]> =>
     await ipcRenderer.invoke("flatpak_get_installed_apps"),
+  getRemoteApps: async (): Promise<FlatpakApp[]> =>
+    await ipcRenderer.invoke("flatpak_get_remote_apps"),
 };

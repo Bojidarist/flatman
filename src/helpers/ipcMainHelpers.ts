@@ -9,4 +9,8 @@ export const initHandlers = (): void => {
   ipcMain.handle("flatpak_get_installed_apps", async () => {
     return await flatpakService.getInstalledApps();
   });
+
+  ipcMain.handle("flatpak_get_remote_apps", async () => {
+    return await flatpakService.getRemoteApps();
+  });
 };

@@ -18,10 +18,11 @@ export const App = () => {
 
   return (
     <div>
+      <Link to={"/remote_list"}>Go To Remote</Link>
       <h1>{versionMessage}</h1>
       {installedApps.map((app, idx) => (
         <div key={idx} className="bg-gray-500 text-center text-white">
-          <Link to={"/app"} state={app}>
+          <Link to={"/app"} state={{ app: app, back_url: "/" }}>
             {app.name}
           </Link>
         </div>

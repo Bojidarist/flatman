@@ -2,6 +2,7 @@ import * as ReactDOMClient from "react-dom/client";
 import { App } from "./components/App";
 import { createHashRouter, RouterProvider } from "react-router-dom";
 import { FlatpakAppView } from "./components/FlatpakAppView";
+import { RemoteFlatpakAppsView } from "./components/RemoteFlatpakAppsView";
 
 const router = createHashRouter([
   {
@@ -11,6 +12,10 @@ const router = createHashRouter([
   {
     path: "/app",
     element: <FlatpakAppView />,
+  },
+  {
+    path: "/remote_list",
+    element: <RemoteFlatpakAppsView />,
   },
 ]);
 
