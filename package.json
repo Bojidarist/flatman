@@ -10,7 +10,7 @@
     "make": "electron-forge make",
     "publish": "electron-forge publish",
     "lint": "eslint --ext .ts,.tsx .",
-    "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\""
+    "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json|tsx)\""
   },
   "keywords": [],
   "author": {
@@ -19,6 +19,8 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@babel/core": "^7.21.4",
+    "@babel/preset-react": "^7.18.6",
     "@electron-forge/cli": "^6.1.0",
     "@electron-forge/maker-deb": "^6.1.0",
     "@electron-forge/maker-rpm": "^6.1.0",
@@ -28,19 +30,30 @@
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
     "@vercel/webpack-asset-relocator-loader": "1.7.3",
+    "autoprefixer": "^10.4.14",
+    "babel-loader": "^9.1.2",
     "css-loader": "^6.0.0",
     "electron": "23.2.1",
     "eslint": "^8.0.1",
     "eslint-plugin-import": "^2.25.0",
     "fork-ts-checker-webpack-plugin": "^7.2.13",
     "node-loader": "^2.0.0",
+    "postcss": "^8.4.21",
+    "postcss-loader": "^7.2.4",
     "prettier": "2.8.7",
     "style-loader": "^3.0.0",
+    "tailwindcss": "^3.3.1",
     "ts-loader": "^9.2.2",
     "ts-node": "^10.0.0",
     "typescript": "~4.5.4"
   },
   "dependencies": {
-    "electron-squirrel-startup": "^1.0.0"
+    "@types/react": "^18.0.33",
+    "@types/react-dom": "^18.0.11",
+    "@types/react-router-dom": "^5.3.3",
+    "electron-squirrel-startup": "^1.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.10.0"
   }
 }
