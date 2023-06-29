@@ -1,6 +1,6 @@
 import { FlatpakApp } from "./models/flatpakApp";
 
-const { ipcRenderer } = require("electron");
+import { ipcRenderer } from "electron";
 
 export const Versions = {
   node: () => process.versions.node,
@@ -10,8 +10,14 @@ export const Versions = {
 };
 
 export const Flatpak = {
+  getAllApps: async (): Promise<FlatpakApp[]> =>
+    await ipcRenderer.invoke("flatpak_get_all_apps"),
   getInstalledApps: async (): Promise<FlatpakApp[]> =>
     await ipcRenderer.invoke("flatpak_get_installed_apps"),
   getRemoteApps: async (): Promise<FlatpakApp[]> =>
     await ipcRenderer.invoke("flatpak_get_remote_apps"),
+  manageApp: async (app: FlatpakApp): Promise<void> =>
+    await ipcRenderer.invoke("flatpak_manage_app", app),
+  getAppDetails: async (app: FlatpakApp): Promise<any> =>
+    await ipcRenderer.invoke("flatpak_get_app_details", app),
 };

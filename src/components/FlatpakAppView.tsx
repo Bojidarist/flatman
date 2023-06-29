@@ -1,26 +1,73 @@
-import { useLocation } from "react-router-dom";
 import { FlatpakApp } from "../models/flatpakApp";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useFlatpakAppsStore } from "../storage/flatpakAppsStorage";
+import { ActionType } from "../storage/flatpakAppsReducer";
 
 export const FlatpakAppView = () => {
   const viewState = useLocation().state as {
     app: FlatpakApp;
     back_url: string;
   };
+
+  const [isInstalling, setIsInstalling] = useState<boolean>(false);
+  const [appDetails, setAppDetails] = useState<any>();
+  const flatpakStore = useFlatpakAppsStore();
+  const app = flatpakStore.state.apps.get(
+    viewState.app.origin + "_" + viewState.app.app_id
+  );
+
+  useEffect(() => {
+    const setInitialStates = async () => {
+      setAppDetails(await window.flatpak.getAppDetails(app));
+    };
+
+    setInitialStates();
+  }, []);
+
+  const installAppBtnClick = async () => {
+    setIsInstalling(true);
+    await window.flatpak.manageApp(app);
+    app.is_installed = !app.is_installed;
+    const type = viewState.app.is_installed
+      ? ActionType.SET_INSTALLED_APP
+      : ActionType.REMOVE_INSTALLED_APP;
+    flatpakStore.dispatch({
+      type: type,
+      payload: app,
+    });
+    setIsInstalling(false);
+  };
+
   return (
     <div>
       <h1>
         <Link to={viewState.back_url}>{"<"}</Link>
       </h1>
-      <h2>{viewState.app.name}</h2>
-      <p>ID: {viewState.app.app_id}</p>
-      <p>Version: {viewState.app.version}</p>
-      <p>Branch: {viewState.app.branch}</p>
+      <h2>{app.name}</h2>
+      <p>ID: {app.app_id}</p>
+      <p>Version: {app.version}</p>
+      <p>Branch: {app.branch}</p>
       <p>
-        {viewState.app.is_installed
+        {app.is_installed
           ? "Application is installed!"
           : "Application is not installed!"}
       </p>
+
+      {(appDetails != null || appDetails != undefined) && (
+        <div>
+          <p>Screenshots: </p>
+          <p>
+            {appDetails["screenshots"].map((x: any, idx: number) => (
+              <div key={idx}>{x["imgDesktopUrl"]}</div>
+            ))}
+          </p>
+        </div>
+      )}
+
+      <button onClick={installAppBtnClick} disabled={isInstalling}>
+        {app.is_installed ? "Remove" : "Install"}
+      </button>
     </div>
   );
 };

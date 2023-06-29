@@ -1,22 +1,13 @@
-import { useEffect, useState } from "react";
-import { FlatpakApp } from "../models/flatpakApp";
 import { Link } from "react-router-dom";
+import { useFlatpakAppsStore } from "../storage/flatpakAppsStorage";
 
 export const RemoteFlatpakAppsView = () => {
-  const [remoteApps, setRemoteApps] = useState<FlatpakApp[]>([]);
-
-  useEffect(() => {
-    const setInitialStates = async () => {
-      setRemoteApps(await window.flatpak.getRemoteApps());
-    };
-
-    setInitialStates();
-  }, []);
+  const flatpakStore = useFlatpakAppsStore();
 
   return (
     <div>
       <Link to={"/"}>Go To Installed</Link>
-      {remoteApps.map((app, idx) => (
+      {[...flatpakStore.state.apps.values()].map((app, idx) => (
         <div key={idx} className="bg-gray-500 text-center text-white">
           <Link to={"/app"} state={{ app: app, back_url: "/remote_list" }}>
             {app.name}

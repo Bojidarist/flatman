@@ -3,6 +3,7 @@ import { App } from "./components/App";
 import { createHashRouter, RouterProvider } from "react-router-dom";
 import { FlatpakAppView } from "./components/FlatpakAppView";
 import { RemoteFlatpakAppsView } from "./components/RemoteFlatpakAppsView";
+import FlatpakAppStore from "./storage/flatpakAppsStorage";
 
 const router = createHashRouter([
   {
@@ -22,4 +23,8 @@ const router = createHashRouter([
 const container = document.getElementById("app");
 const root = ReactDOMClient.createRoot(container);
 
-root.render(<RouterProvider router={router} />);
+root.render(
+  <FlatpakAppStore>
+    <RouterProvider router={router} />
+  </FlatpakAppStore>
+);
