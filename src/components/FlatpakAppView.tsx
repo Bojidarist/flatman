@@ -29,11 +29,8 @@ export const FlatpakAppView = () => {
     setIsInstalling(true);
     await window.flatpak.manageApp(app);
     app.is_installed = !app.is_installed;
-    const type = viewState.app.is_installed
-      ? ActionType.SET_INSTALLED_APP
-      : ActionType.REMOVE_INSTALLED_APP;
     flatpakStore.dispatch({
-      type: type,
+      type: ActionType.SET_INSTALLED_APP,
       payload: app,
     });
     setIsInstalling(false);

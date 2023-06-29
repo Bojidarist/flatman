@@ -14,7 +14,7 @@ export const App = () => {
 
       if (flatpakStore.state.apps.size == 0) {
         flatpakStore.dispatch({
-          type: ActionType.SET_INITIAL_APPS,
+          type: ActionType.SET_INSTALLED_APPS_BULK,
           payload: await window.flatpak.getAllApps(),
         });
       }
