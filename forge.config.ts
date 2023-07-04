@@ -20,6 +20,8 @@ const config: ForgeConfig = {
   plugins: [
     new WebpackPlugin({
       mainConfig,
+      devContentSecurityPolicy:
+        "connect-src 'self' https://dl.flathub.org/ https://flathub.org/",
       renderer: {
         config: rendererConfig,
         entryPoints: [

@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useFlatpakAppsStore } from "../storage/flatpakAppsStorage";
 import { ActionType } from "../storage/flatpakAppsReducer";
+import * as flathubService from "../services/flathubService";
 
 export const FlatpakAppView = () => {
   const viewState = useLocation().state as {
@@ -11,15 +12,20 @@ export const FlatpakAppView = () => {
   };
 
   const [isInstalling, setIsInstalling] = useState<boolean>(false);
-  const [appDetails, setAppDetails] = useState<any>();
   const flatpakStore = useFlatpakAppsStore();
-  const app = flatpakStore.state.apps.get(
+  let app = flatpakStore.state.apps.get(
     viewState.app.origin + "_" + viewState.app.app_id
   );
 
   useEffect(() => {
     const setInitialStates = async () => {
-      setAppDetails(await window.flatpak.getAppDetails(app));
+      if (app.origin == "flathub" && app.screenshots.length == 0) {
+        app = await flathubService.getAppDetails(app);
+        flatpakStore.dispatch({
+          type: ActionType.SET_INSTALLED_APP,
+          payload: app,
+        });
+      }
     };
 
     setInitialStates();
@@ -51,16 +57,12 @@ export const FlatpakAppView = () => {
           : "Application is not installed!"}
       </p>
 
-      {(appDetails != null || appDetails != undefined) && (
-        <div>
-          <p>Screenshots: </p>
-          <p>
-            {appDetails["screenshots"].map((x: any, idx: number) => (
-              <div key={idx}>{x["imgDesktopUrl"]}</div>
-            ))}
-          </p>
-        </div>
-      )}
+      <div>
+        <p>Screenshots: </p>
+        {app.screenshots.map((screenshotUrl: string, idx: number) => (
+          <img key={idx} src={screenshotUrl} />
+        ))}
+      </div>
 
       <button onClick={installAppBtnClick} disabled={isInstalling}>
         {app.is_installed ? "Remove" : "Install"}

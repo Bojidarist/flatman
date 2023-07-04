@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useFlatpakAppsStore } from "../storage/flatpakAppsStorage";
 import { ActionType } from "../storage/flatpakAppsReducer";
+import * as flathubService from "../services/flathubService";
 
 export const App = () => {
   const [versionMessage, setVersionMessage] =
@@ -15,7 +16,9 @@ export const App = () => {
       if (flatpakStore.state.apps.size == 0) {
         flatpakStore.dispatch({
           type: ActionType.SET_INSTALLED_APPS_BULK,
-          payload: await window.flatpak.getAllApps(),
+          payload: await flathubService.setAppsDetails(
+            await window.flatpak.getAllApps()
+          ),
         });
       }
     };
@@ -32,7 +35,9 @@ export const App = () => {
         .map((app, idx) => (
           <div key={idx} className="bg-gray-500 text-center text-white">
             <Link to={"/app"} state={{ app: app, back_url: "/" }}>
-              {app.name}
+              <img src={app.icon_url} width="32" height="32" />
+              <p>{app.name}</p>
+              <p>{app.summary}</p>
             </Link>
           </div>
         ))}

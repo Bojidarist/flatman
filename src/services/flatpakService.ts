@@ -25,6 +25,8 @@ export const getInstalledApps = async (): Promise<FlatpakApp[]> => {
         is_installed: true,
         screenshots: [],
         origin: row[5],
+        summary: "",
+        icon_url: "",
       };
     });
 };
@@ -52,7 +54,9 @@ export const getRemoteApps = async (): Promise<FlatpakApp[]> => {
         installation_type: null,
         is_installed: false,
         screenshots: [],
-        origin: row[4]
+        origin: row[4],
+        summary: "",
+        icon_url: "",
       };
     });
 

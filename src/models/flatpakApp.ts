@@ -5,7 +5,8 @@ export interface FlatpakApp {
   branch: string;
   installation_type: string;
   is_installed: boolean;
+  summary: string;
+  icon_url: string;
   screenshots: string[];
   origin: string;
 }
-
