@@ -59,6 +59,7 @@
     "react-router-dom": "^6.10.0"
   },
   "resolutions": {
-    "word-wrap": "aashutoshrathi/word-wrap"
+    "word-wrap": "aashutoshrathi/word-wrap",
+    "semver": "^7.5.2"
   }
 }
