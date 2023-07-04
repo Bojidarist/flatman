@@ -7,6 +7,7 @@ import * as flathubService from "../services/flathubService";
 export const App = () => {
   const [versionMessage, setVersionMessage] =
     useState<string>("Loading version...");
+  const [searchInput, setSearchInput] = useState("");
   const flatpakStore = useFlatpakAppsStore();
 
   useEffect(() => {
@@ -26,12 +27,32 @@ export const App = () => {
     setInitialStates();
   }, []);
 
+  const handleSearchChange = (e: React.FormEvent<HTMLInputElement>) => {
+    setSearchInput(e.currentTarget.value);
+  };
+
   return (
     <div>
       <Link to={"/remote_list"}>Go To Remote</Link>
+
       <h1>{versionMessage}</h1>
+
+      <div>
+        <input
+          type="search"
+          placeholder="Search"
+          onChange={handleSearchChange}
+          value={searchInput}
+        ></input>
+      </div>
+
       {[...flatpakStore.state.apps.values()]
-        .filter((app) => app.is_installed)
+        .filter(
+          (app) =>
+            app.is_installed &&
+            app.name.toLowerCase().includes(searchInput.toLowerCase())
+        )
+        .slice(0, 100)
         .map((app, idx) => (
           <div key={idx} className="bg-gray-500 text-center text-white">
             <Link to={"/app"} state={{ app: app, back_url: "/" }}>
