@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import { FlatpakApp } from "../models/flatpakApp";
 
 type FlathubAppsResponse = {
