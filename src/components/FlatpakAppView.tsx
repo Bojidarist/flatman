@@ -45,7 +45,7 @@ export const FlatpakAppView = () => {
 
   return (
     <div>
-      <Spinner active={isInstalling} />
+      <Spinner active={isInstalling} disableSpinner={isInstalling} />
       <h1>
         <Link to={viewState.back_url}>{"<"}</Link>
       </h1>
