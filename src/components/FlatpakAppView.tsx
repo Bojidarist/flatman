@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useFlatpakAppsStore } from "../storage/flatpakAppsStorage";
 import { ActionType } from "../storage/flatpakAppsReducer";
 import * as flathubService from "../services/flathubService";
+import { Spinner } from "./shared/Spinner";
 
 export const FlatpakAppView = () => {
   const viewState = useLocation().state as {
@@ -44,6 +45,7 @@ export const FlatpakAppView = () => {
 
   return (
     <div>
+      <Spinner active={isInstalling} />
       <h1>
         <Link to={viewState.back_url}>{"<"}</Link>
       </h1>
