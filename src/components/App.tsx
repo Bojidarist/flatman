@@ -3,17 +3,17 @@ import { Link } from "react-router-dom";
 import { useFlatpakAppsStore } from "../storage/flatpakAppsStorage";
 import { ActionType } from "../storage/flatpakAppsReducer";
 import * as flathubService from "../services/flathubService";
+import { Spinner } from "./shared/Spinner";
+import { Layout } from "./shared/Layout";
+import { SearchBar } from "./SearchBar";
+import { AppCard } from "./AppCard";
 
 export const App = () => {
-  const [versionMessage, setVersionMessage] =
-    useState<string>("Loading version...");
   const [searchInput, setSearchInput] = useState("");
   const flatpakStore = useFlatpakAppsStore();
 
   useEffect(() => {
     const setInitialStates = async () => {
-      setVersionMessage(await window.versions.flatpak());
-
       if (flatpakStore.state.apps.size == 0) {
         flatpakStore.dispatch({
           type: ActionType.SET_INSTALLED_APPS_BULK,
@@ -32,36 +32,30 @@ export const App = () => {
   };
 
   return (
-    <div>
-      <Link to={"/remote_list"}>Go To Remote</Link>
-
-      <h1>{versionMessage}</h1>
-
+    <Layout>
       <div>
-        <input
-          type="search"
-          placeholder="Search"
-          onChange={handleSearchChange}
-          value={searchInput}
-        ></input>
-      </div>
+        <Spinner
+          active={flatpakStore.state.apps.size == 0}
+          disableSpinner={flatpakStore.state.apps.size == 0}
+        />
 
-      {[...flatpakStore.state.apps.values()]
-        .filter(
-          (app) =>
-            app.is_installed &&
-            app.name.toLowerCase().includes(searchInput.toLowerCase())
-        )
-        .slice(0, 100)
-        .map((app, idx) => (
-          <div key={idx} className="bg-gray-500 text-center text-white">
-            <Link to={"/app"} state={{ app: app, back_url: "/" }}>
-              <img src={app.icon_url} width="32" height="32" />
-              <p>{app.name}</p>
-              <p>{app.summary}</p>
-            </Link>
-          </div>
-        ))}
-    </div>
+        <SearchBar className="m-4" onChange={handleSearchChange} />
+
+        <div className="grid grid-cols-2 m-4 gap-4 content-start">
+          {[...flatpakStore.state.apps.values()]
+            .filter(
+              (app) =>
+                app.is_installed &&
+                app.name.toLowerCase().includes(searchInput.toLowerCase())
+            )
+            .slice(0, 100)
+            .map((app, idx) => (
+              <div key={idx}>
+                <AppCard app={app} />
+              </div>
+            ))}
+        </div>
+      </div>
+    </Layout>
   );
 };

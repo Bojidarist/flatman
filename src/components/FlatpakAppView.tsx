@@ -5,6 +5,7 @@ import { useFlatpakAppsStore } from "../storage/flatpakAppsStorage";
 import { ActionType } from "../storage/flatpakAppsReducer";
 import * as flathubService from "../services/flathubService";
 import { Spinner } from "./shared/Spinner";
+import { Layout } from "./shared/Layout";
 
 export const FlatpakAppView = () => {
   const viewState = useLocation().state as {
@@ -44,31 +45,30 @@ export const FlatpakAppView = () => {
   };
 
   return (
-    <div>
-      <Spinner active={isInstalling} disableSpinner={isInstalling} />
-      <h1>
-        <Link to={viewState.back_url}>{"<"}</Link>
-      </h1>
-      <h2>{app.name}</h2>
-      <p>ID: {app.app_id}</p>
-      <p>Version: {app.version}</p>
-      <p>Branch: {app.branch}</p>
-      <p>
-        {app.is_installed
-          ? "Application is installed!"
-          : "Application is not installed!"}
-      </p>
-
+    <Layout>
       <div>
-        <p>Screenshots: </p>
-        {app.screenshots.map((screenshotUrl: string, idx: number) => (
-          <img key={idx} src={screenshotUrl} />
-        ))}
-      </div>
+        <Spinner active={isInstalling} disableSpinner={isInstalling} />
+        <h2>{app.name}</h2>
+        <p>ID: {app.app_id}</p>
+        <p>Version: {app.version}</p>
+        <p>Branch: {app.branch}</p>
+        <p>
+          {app.is_installed
+            ? "Application is installed!"
+            : "Application is not installed!"}
+        </p>
 
-      <button onClick={installAppBtnClick} disabled={isInstalling}>
-        {app.is_installed ? "Remove" : "Install"}
-      </button>
-    </div>
+        <div>
+          <p>Screenshots: </p>
+          {app.screenshots.map((screenshotUrl: string, idx: number) => (
+            <img key={idx} src={screenshotUrl} />
+          ))}
+        </div>
+
+        <button onClick={installAppBtnClick} disabled={isInstalling}>
+          {app.is_installed ? "Remove" : "Install"}
+        </button>
+      </div>
+    </Layout>
   );
 };
