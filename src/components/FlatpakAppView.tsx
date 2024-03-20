@@ -1,9 +1,12 @@
 import { FlatpakApp } from "../models/flatpakApp";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useFlatpakAppsStore } from "../storage/flatpakAppsStorage";
 import { ActionType } from "../storage/flatpakAppsReducer";
 import * as flathubService from "../services/flathubService";
+import { Spinner } from "./shared/Spinner";
+import { Layout } from "./shared/Layout";
+import ImageGallery from 'react-image-gallery';
 
 export const FlatpakAppView = () => {
   const viewState = useLocation().state as {
@@ -42,31 +45,37 @@ export const FlatpakAppView = () => {
     setIsInstalling(false);
   };
 
+  const openAppBtnClick = async () => {
+    await window.flatpak.openApp(app);
+  }
+
   return (
-    <div>
-      <h1>
-        <Link to={viewState.back_url}>{"<"}</Link>
-      </h1>
-      <h2>{app.name}</h2>
-      <p>ID: {app.app_id}</p>
-      <p>Version: {app.version}</p>
-      <p>Branch: {app.branch}</p>
-      <p>
-        {app.is_installed
-          ? "Application is installed!"
-          : "Application is not installed!"}
-      </p>
-
+    <Layout>
       <div>
-        <p>Screenshots: </p>
-        {app.screenshots.map((screenshotUrl: string, idx: number) => (
-          <img key={idx} src={screenshotUrl} />
-        ))}
+        <Spinner active={isInstalling} disableSpinner={isInstalling} />
+        <div className="p-4">
+          <div>
+            <img 
+              className="object-cover rounded-t-lg h-16 w-16 mr-2 md:rounded-none md:rounded-l-lg inline-block text-left"
+              src={app.icon_url}
+              alt=""
+            />
+            <p className="inline-block text-left mb-2 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl dark:text-white">{app.name}</p>
+            <div className="inline-block float-right">
+              {app.is_installed && <button className={"inline-block text-white font-bold py-2 px-4 mr-4 rounded bg-blue-500 hover:bg-blue-700"} onClick={openAppBtnClick} disabled={isInstalling}>Open</button>}
+              <button className={"inline-block text-white font-bold py-2 px-4 rounded " + (app.is_installed ? "bg-red-500 hover:bg-red-700" : "bg-blue-500 hover:bg-blue-700")} onClick={installAppBtnClick} disabled={isInstalling}>
+                {app.is_installed ? "Remove" : "Install"}
+              </button>
+            </div>
+          </div>
+          <p className="text-lg text-gray-400 my-2">{app.summary}</p>
+          <div className="max-w-full bg-gray-900/20 rounded">
+            <div className="container mx-auto max-w-6xl mt-4">
+              <ImageGallery showThumbnails={false} showFullscreenButton={false} showPlayButton={false} autoPlay={true} items={app.screenshots.map((screenshoturl: string, idx: number) => ({original: screenshoturl}))} />
+            </div>
+          </div>
+        </div>
       </div>
-
-      <button onClick={installAppBtnClick} disabled={isInstalling}>
-        {app.is_installed ? "Remove" : "Install"}
-      </button>
-    </div>
+    </Layout>
   );
 };
