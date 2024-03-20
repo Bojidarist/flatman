@@ -23,7 +23,7 @@ const createWindow = (): void => {
     },
   });
 
-  mainWindow.removeMenu();
+  // mainWindow.removeMenu();
 
   ipcMainHelpers.initHandlers();
 
