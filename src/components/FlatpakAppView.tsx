@@ -1,5 +1,5 @@
 import { FlatpakApp } from "../models/flatpakApp";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useFlatpakAppsStore } from "../storage/flatpakAppsStorage";
 import { ActionType } from "../storage/flatpakAppsReducer";
@@ -45,6 +45,10 @@ export const FlatpakAppView = () => {
     setIsInstalling(false);
   };
 
+  const openAppBtnClick = async () => {
+    await window.flatpak.openApp(app);
+  }
+
   return (
     <Layout>
       <div>
@@ -57,9 +61,12 @@ export const FlatpakAppView = () => {
               alt=""
             />
             <p className="inline-block text-left mb-2 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl dark:text-white">{app.name}</p>
-            <button className={"inline-block text-right float-right text-white font-bold py-2 px-4 rounded " + (app.is_installed ? "bg-red-500 hover:bg-red-700" : "bg-blue-500 hover:bg-blue-700")} onClick={installAppBtnClick} disabled={isInstalling}>
-              {app.is_installed ? "Remove" : "Install"}
-            </button>
+            <div className="inline-block float-right">
+              {app.is_installed && <button className={"inline-block text-white font-bold py-2 px-4 mr-4 rounded bg-blue-500 hover:bg-blue-700"} onClick={openAppBtnClick} disabled={isInstalling}>Open</button>}
+              <button className={"inline-block text-white font-bold py-2 px-4 rounded " + (app.is_installed ? "bg-red-500 hover:bg-red-700" : "bg-blue-500 hover:bg-blue-700")} onClick={installAppBtnClick} disabled={isInstalling}>
+                {app.is_installed ? "Remove" : "Install"}
+              </button>
+            </div>
           </div>
           <p className="text-lg text-gray-400 my-2">{app.summary}</p>
           <div className="max-w-full bg-gray-900/20 rounded">

@@ -1,4 +1,4 @@
-import { exec, ExecException } from "child_process";
+import { exec, spawn, ExecException } from "child_process";
 
 export const executeCommand = async (cmd: string): Promise<string> => {
   return new Promise((res, rej) => {
@@ -13,3 +13,9 @@ export const executeCommand = async (cmd: string): Promise<string> => {
     });
   });
 };
+
+export const spawnCommand = async (cmd: string, args: string[]): Promise<void> => {
+  spawn(cmd, args);
+  Promise.resolve();
+}
+

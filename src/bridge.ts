@@ -18,6 +18,8 @@ export const Flatpak = {
     await ipcRenderer.invoke("flatpak_get_remote_apps"),
   manageApp: async (app: FlatpakApp): Promise<void> =>
     await ipcRenderer.invoke("flatpak_manage_app", app),
+  openApp: async (app: FlatpakApp): Promise<void> =>
+    await ipcRenderer.invoke("flatpak_open_app", app),
   getAppDetails: async (app: FlatpakApp): Promise<any> =>
     await ipcRenderer.invoke("flatpak_get_app_details", app),
 };
