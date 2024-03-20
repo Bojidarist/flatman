@@ -18,6 +18,7 @@ const createWindow = (): void => {
     width: 1280,
     minHeight: 600,
     minWidth: 800,
+    backgroundColor: "#111827",
     webPreferences: {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
     },
