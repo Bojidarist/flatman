@@ -27,7 +27,7 @@ export const initHandlers = (): void => {
     }
   });
 
-  ipcMain.handle("flatpak_open_app", async(_, args) => {
+  ipcMain.handle("flatpak_open_app", async (_, args) => {
     const app = args as FlatpakApp;
     if (app.is_installed) {
       await commandHelpers.spawnCommand("flatpak", ["run", app.app_id]);

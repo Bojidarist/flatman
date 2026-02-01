@@ -2,12 +2,20 @@ import { ReactNode } from "react";
 import { AiFillHome, AiFillCompass, AiFillSetting } from "react-icons/ai";
 import { BiSolidDownload } from "react-icons/bi";
 import { Link } from "react-router-dom";
+import { ActionType } from "../../storage/flatpakAppsReducer";
+import { useFlatpakAppsStore } from "../../storage/flatpakAppsStorage";
 
 interface LayoutProps {
   children: ReactNode;
 }
 
 export const Layout = (props: LayoutProps) => {
+  const flatpakStore = useFlatpakAppsStore();
+
+  const handleTabChange = (tab: string): void => {
+    flatpakStore.dispatch({type: ActionType.SET_SELECTED_TAB, payload: tab});
+  }
+
   return (
     <>
       <div className="relative md:flex h-screen overflow-hidden">
@@ -18,7 +26,8 @@ export const Layout = (props: LayoutProps) => {
                 <div className="pt-2">
                   <Link
                     to="/"
-                    className="text-gray-500 focus:outline-nones transition-colors duration-200 rounded-lg dark:text-gray-400 dark:hover:bg-gray-800 hover:bg-gray-100"
+                    onClick={() => {handleTabChange("/")}}
+                    className={(flatpakStore.state.selectedTab == "/" ? "text-blue-500" : "text-gray-500") + " focus:outline-nones transition-colors duration-200 rounded-lg"}
                   >
                     <AiFillHome className="h-8 w-8" />
                   </Link>
@@ -27,15 +36,17 @@ export const Layout = (props: LayoutProps) => {
                 <div className="pt-4">
                   <Link
                     to="/remote_list"
-                    className="text-blue-500 transition-colors duration-200 bg-blue-100 rounded-lg dark:text-blue-400 dark:bg-gray-800"
+                    onClick={() => {handleTabChange("/remote_list")}}
+                    className={(flatpakStore.state.selectedTab == "/remote_list" ? "text-blue-500" : "text-gray-500") + " transition-colors duration-200 bg-blue-100 rounded-lg"}
                   >
                     <AiFillCompass className="h-8 w-8" />
                   </Link>
                 </div>
                 <div className="pt-4">
                   <Link
-                    to="/"
-                    className="text-gray-500 focus:outline-nones transition-colors duration-200 rounded-lg dark:text-gray-400 dark:hover:bg-gray-800 hover:bg-gray-100"
+                    to="/updates"
+                    onClick={() => {handleTabChange("/updates")}}
+                    className={(flatpakStore.state.selectedTab == "/updates" ? "text-blue-500" : "text-gray-500") + " focus:outline-nones transition-colors duration-200 rounded-lg"}
                   >
                     <BiSolidDownload className="h-8 w-8" />
                   </Link>
@@ -44,8 +55,9 @@ export const Layout = (props: LayoutProps) => {
             </div>
             <div className="mt-auto">
               <Link
-                to="/"
-                className="text-gray-500 focus:outline-nones transition-colors duration-200 rounded-lg dark:text-gray-400 dark:hover:bg-gray-800 hover:bg-gray-100"
+                to="/settings"
+                onClick={() => handleTabChange("/settings")}
+                className={(flatpakStore.state.selectedTab == "/settings" ? "text-blue-500" : "text-gray-500") + " focus:outline-nones transition-colors duration-200 rounded-lg"}
               >
                 <AiFillSetting className="h-8 w-8" />
               </Link>

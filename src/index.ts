@@ -21,6 +21,7 @@ const createWindow = (): void => {
     backgroundColor: "#111827",
     webPreferences: {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
+      webSecurity: false,
     },
   });
 

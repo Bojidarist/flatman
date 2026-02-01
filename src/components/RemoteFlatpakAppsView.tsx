@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { useFlatpakAppsStore } from "../storage/flatpakAppsStorage";
 import { useState } from "react";
 import { Layout } from "./shared/Layout";
@@ -16,9 +15,11 @@ export const RemoteFlatpakAppsView = () => {
   return (
     <Layout>
       <div>
+        <h1 className="m-4 text-3xl font-extrabold leading-none tracking-tight text-white">Discover</h1>
         <SearchBar className="m-4" onChange={handleSearchChange} />
         <div className="grid grid-cols-2 m-4 gap-4 content-start">
           {[...flatpakStore.state.apps.values()]
+            .filter((app) => !app.is_installed)
             .filter((app) =>
               app.name.toLowerCase().includes(searchInput.toLowerCase())
             )
@@ -33,3 +34,4 @@ export const RemoteFlatpakAppsView = () => {
     </Layout>
   );
 };
+

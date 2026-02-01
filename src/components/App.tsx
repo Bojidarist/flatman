@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { useFlatpakAppsStore } from "../storage/flatpakAppsStorage";
 import { ActionType } from "../storage/flatpakAppsReducer";
 import * as flathubService from "../services/flathubService";
@@ -38,6 +37,10 @@ export const App = () => {
           active={flatpakStore.state.apps.size == 0}
           disableSpinner={flatpakStore.state.apps.size == 0}
         />
+
+        <h1 className="m-4 text-3xl font-extrabold leading-none tracking-tight text-white">
+          Applications
+        </h1>
 
         <SearchBar className="m-4" onChange={handleSearchChange} />
 
